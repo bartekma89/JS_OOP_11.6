@@ -68,5 +68,6 @@ module.exports = function (grunt) {
 	});
 
 
-	grunt.registerTask('default', ['watch', 'sass', 'cssmin', 'uglify', 'jshint']);
+	grunt.registerTask('default', ['watch', 'sass', 'jshint']);
+	grunt.registerTask('compress', ['cssmin', 'uglify']);
 };
