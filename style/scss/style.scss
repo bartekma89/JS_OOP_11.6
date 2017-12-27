@@ -2,11 +2,18 @@
 	box-sizing: border-box;
 }
 
+.row:before,
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
 
 //BOARD
 .column-container {
 	display: flex;
-	//flex-wrap: wrap;
+	flex-wrap: wrap;
 	justify-content: flex-start;
 	align-items: flex-start;
 	background-color: lightyellow;
@@ -36,14 +43,38 @@
 
 .card {
 	display: flex;
-	height: 150px;
+	min-height: 150px;
+	max-height: 300px;
 	width: 250px;
-	background-color: bisque;
 	padding: 10px;
-	margin: 10px;
+	margin: 0 auto 5px auto;
 	position: relative;
+	overflow: hidden;
+
+	.card-description {
+		margin: 0;
+		padding: 3px;
+		width: 100%;
+		float: left;
+	}
 }
 
-.card-description {
-	margin: 0;
+h2 {
+	margin: 3px;
+}
+
+.column-title {
+	text-align: center;
+}
+
+.completed {
+	background-color: lightblue;
+}
+
+.inProgress {
+	background-color: yellow;
+}
+
+.stopped {
+	background-color: red;
 }

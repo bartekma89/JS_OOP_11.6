@@ -10,7 +10,7 @@ $(function () {
 	}
 
 	var board = {
-		name: 'Kanban Board',
+		name: 'Kaban Board',
 		addColumn: function (column) {
 			this.$element.append(column.$element);
 		},
@@ -18,80 +18,106 @@ $(function () {
 	};
 
 	$('.create-column').click(function () {
-		var name = prompt('name column');
-		var column = new Column(name);
-		board.addColumn(column);
+		var columnName = prompt('Enter a column name', 'Column name');
+		if (columnName === '') {
+			columnName = 'New Column';
+		}
+		board.addColumn(new Column(columnName));
+
 	});
 
 	function Column(name) {
 		var self = this;
 
-		this.name = name;
 		this.id = generateId();
+		this.name = name;
 		this.$element = createColumn();
 
 		function createColumn() {
 			var $column = $('<div>').addClass('column');
 			var $columnTitle = $('<h2>').addClass('column-title').text(self.name);
 			var $columnCardList = $('<ul>').addClass('column-card-list');
-			var $columnDelete = $('<button>').addClass('btn-delete').text('X');
-			var $columnAddCard = $('<button>').addClass('add-card').text('Add card');
+			var $columDelete = $('<button>').addClass('btn-delete').text('X');
+			var $columnAddCard = $('<button>').addClass('add-card').text('Add Card');
 
-			console.log(self);
-			
-			$columnDelete.click(function () {
+			$columDelete.click(function () {
 				self.removeColumn();
 			});
 
 			$columnAddCard.click(function () {
-				self.addCard(new Card(prompt('name card')));
+				var cardDescription = prompt('Description');
+				self.addCard(new Card(cardDescription));
 			});
 
 			$column.append($columnTitle)
-				.append($columnDelete)
 				.append($columnAddCard)
+				.append($columDelete)
 				.append($columnCardList);
 
 			return $column;
 		}
+
 	}
 
 	Column.prototype = {
-		addCard: function(card) {
+		addCard: function (card) {
 			this.$element.children('ul').append(card.$element);
 		},
-		removeColumn: function() {
+
+		removeColumn: function () {
 			this.$element.remove();
 		}
 	};
-	
+
 	function Card(description) {
 		var self = this;
-		
+
 		this.description = description;
 		this.id = generateId();
 		this.$element = createCard();
-		
+
+		console.log(self);
+		console.log(this.$element);
+
 		function createCard() {
-			var $card = $('<li>').addClass('card');
-			var $cardDescription = $('<p>').addClass('card-description').text(self.description);
+			var $card = $('<li>').addClass('card inProgress');
+			var $carDescription = $('<p>').addClass('card-description').text(self.description);
 			var $cardDelete = $('<button>').addClass('btn-delete').text('X');
-			
-			console.log(self);
-			
-			$cardDelete.click(function() {
+
+			$cardDelete.click(function () {
 				self.removeCard();
 			});
 
-			$card.append($cardDescription).append($cardDelete);
-			
+			$card.click(function () {
+				self.changeStatus();
+			})
+
+			$card.append($carDescription)
+				.append($cardDelete);
+
 			return $card;
 		}
 	}
-	
+
 	Card.prototype = {
-		removeCard: function() {
+		removeCard: function () {
 			this.$element.remove();
+		},
+
+		changeStatus: function () {
+			
+			if (this.$element.hasClass('inProgress')) {
+				this.$element.removeClass('inProgress');
+				this.$element.addClass('completed');
+			} else if (this.$element.hasClass('completed')) {
+				this.$element.removeClass('completed');
+				this.$element.addClass('stopped');
+			} else if (this.$element.hasClass('stopped')) {
+				this.$element.removeClass('stopped');
+				this.$element.addClass('inProgress');
+			}
+
 		}
 	};
+
 });
