@@ -9,23 +9,6 @@ $(function () {
 		return id;
 	}
 
-	var board = {
-		name: 'Kaban Board',
-		addColumn: function (column) {
-			this.$element.append(column.$element);
-		},
-		$element: $('#board .column-container')
-	};
-
-	$('.create-column').click(function () {
-		var columnName = prompt('Enter a column name', 'Column name');
-		if (columnName === '') {
-			columnName = 'New Column';
-		}
-		board.addColumn(new Column(columnName));
-
-	});
-
 	function Column(name) {
 		var self = this;
 
@@ -39,6 +22,8 @@ $(function () {
 			var $columnCardList = $('<ul>').addClass('column-card-list');
 			var $columDelete = $('<button>').addClass('btn-delete').text('X');
 			var $columnAddCard = $('<button>').addClass('add-card').text('Add Card');
+			var $fakeCard = $('<li>').addClass('fake-placeholder');
+			self.listLength = $('li').length;
 
 			$columDelete.click(function () {
 				self.removeColumn();
@@ -54,6 +39,8 @@ $(function () {
 				.append($columDelete)
 				.append($columnCardList);
 
+			$columnCardList.append($fakeCard);
+			
 			return $column;
 		}
 
@@ -62,6 +49,8 @@ $(function () {
 	Column.prototype = {
 		addCard: function (card) {
 			this.$element.children('ul').append(card.$element);
+			console.log(this.listLength = $('li').length);
+			checkList();
 		},
 
 		removeColumn: function () {
@@ -81,19 +70,20 @@ $(function () {
 
 		function createCard() {
 			var $card = $('<li>').addClass('card inProgress');
-			var $carDescription = $('<p>').addClass('card-description').text(self.description);
+			var $cardDescription = $('<p>').addClass('card-description').text(self.description);
 			var $cardDelete = $('<button>').addClass('btn-delete').text('X');
 
 			$cardDelete.click(function () {
 				self.removeCard();
+				checkList();
 			});
 
 			$card.click(function () {
 				self.changeStatus();
-			})
+			});
 
-			$card.append($carDescription)
-				.append($cardDelete);
+			$card.append($cardDelete)
+				.append($cardDescription);
 
 			return $card;
 		}
@@ -105,19 +95,64 @@ $(function () {
 		},
 
 		changeStatus: function () {
-			
+			var self = this;
+
+			function changeCardStatus(currentStatus, nextStatus) {
+				self.$element.removeClass(currentStatus);
+				self.$element.addClass(nextStatus);
+			}
+
 			if (this.$element.hasClass('inProgress')) {
-				this.$element.removeClass('inProgress');
-				this.$element.addClass('completed');
+				changeCardStatus('inProgress', 'completed');
 			} else if (this.$element.hasClass('completed')) {
-				this.$element.removeClass('completed');
-				this.$element.addClass('stopped');
+				changeCardStatus('completed', 'stopped');
 			} else if (this.$element.hasClass('stopped')) {
-				this.$element.removeClass('stopped');
-				this.$element.addClass('inProgress');
+				changeCardStatus('stopped', 'inProgress');
+
 			}
 
 		}
 	};
 
+	var board = {
+		name: 'Kaban Board',
+		addColumn: function (column) {
+			this.$element.append(column.$element);
+			initSortable();
+		},
+		$element: $('#board .column-container')
+	};
+
+	function initSortable() {
+		$('.column-card-list').sortable({
+			connectWith: '.column-card-list',
+			placeholder: 'card-placeholder',
+			/*dropOnEmpty: true,
+			forcePlaceholderSize: true*/
+		}).disableSelection();
+		checkList();
+	}
+
+	$('.create-column').click(function () {
+		var columnName = prompt('Enter a column name', 'Column name');
+		if (columnName === '') {
+			columnName = 'New Column';
+		}
+		board.addColumn(new Column(columnName));
+	});
+
+	function checkList() {
+		console.log($('.column-card-list').find('.fake-placeholder').length, ' bla');
+		console.log($('.column-card-list').length);
+		$('.column-card-list').each(function() {
+			console.log('ilosc li ', $(this).find('li').length)
+			if($(this).find('li').length > 1){
+				$(this).find('.fake-placeholder').hide();
+			} else {
+				$(this).find('.fake-placeholder').show();
+			}
+		});
+	}
+	
+	checkList();
 });
