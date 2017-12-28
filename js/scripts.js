@@ -81,6 +81,8 @@ $(function () {
 			$card.click(function () {
 				self.changeStatus();
 			});
+			
+			$card.on('mousemove', checkList);
 
 			$card.append($cardDelete)
 				.append($cardDescription);
@@ -130,7 +132,6 @@ $(function () {
 			/*dropOnEmpty: true,
 			forcePlaceholderSize: true*/
 		}).disableSelection();
-		checkList();
 	}
 
 	$('.create-column').click(function () {
