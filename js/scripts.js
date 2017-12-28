@@ -32,15 +32,16 @@ $(function () {
 			$columnAddCard.click(function () {
 				var cardDescription = prompt('Description');
 				self.addCard(new Card(cardDescription));
+				checkList();
 			});
-
+		
 			$column.append($columnTitle)
 				.append($columnAddCard)
 				.append($columDelete)
 				.append($columnCardList);
 
-			$columnCardList.append($fakeCard);
-			
+			$columnCardList.append($fakeCard.text('Push card here'));
+
 			return $column;
 		}
 
@@ -49,7 +50,6 @@ $(function () {
 	Column.prototype = {
 		addCard: function (card) {
 			this.$element.children('ul').append(card.$element);
-			console.log(this.listLength = $('li').length);
 			checkList();
 		},
 
@@ -58,15 +58,13 @@ $(function () {
 		}
 	};
 
+	//card
 	function Card(description) {
 		var self = this;
 
 		this.description = description;
 		this.id = generateId();
 		this.$element = createCard();
-
-		console.log(self);
-		console.log(this.$element);
 
 		function createCard() {
 			var $card = $('<li>').addClass('card inProgress');
@@ -81,8 +79,11 @@ $(function () {
 			$card.click(function () {
 				self.changeStatus();
 			});
-			
-			$card.on('mousemove', checkList);
+
+			$card.mouseover(function(){
+				console.log('1');
+				checkList();
+			});
 
 			$card.append($cardDelete)
 				.append($cardDescription);
@@ -128,9 +129,7 @@ $(function () {
 	function initSortable() {
 		$('.column-card-list').sortable({
 			connectWith: '.column-card-list',
-			placeholder: 'card-placeholder',
-			/*dropOnEmpty: true,
-			forcePlaceholderSize: true*/
+			placeholder: 'card-placeholder'
 		}).disableSelection();
 	}
 
@@ -143,17 +142,29 @@ $(function () {
 	});
 
 	function checkList() {
-		console.log($('.column-card-list').find('.fake-placeholder').length, ' bla');
-		console.log($('.column-card-list').length);
-		$('.column-card-list').each(function() {
-			console.log('ilosc li ', $(this).find('li').length)
-			if($(this).find('li').length > 1){
+		$('.column-card-list').each(function () {
+			if ($(this).find('li').length > 1) {
 				$(this).find('.fake-placeholder').hide();
 			} else {
 				$(this).find('.fake-placeholder').show();
 			}
 		});
 	}
-	
+
 	checkList();
+	
+	var toDo = new Column("ToDo");
+	var doing = new Column("Doing");
+	var done = new Column("Done");
+	
+	board.addColumn(toDo);
+	board.addColumn(doing);
+	board.addColumn(done);
+	
+	var card1 = new Card('New Task');
+	var card2 = new Card('Create kanban board');
+	
+	toDo.addCard(card1);
+	doing.addCard(card2);
+	
 });
