@@ -9,6 +9,18 @@
 	clear: both;
 }
 
+body {
+	background: #ECECEC;
+	
+	#board {
+		max-width: 1200px;
+		width: 80%;
+		
+		h1 {
+			text-align: center;
+		}
+	}
+}
 
 //BOARD
 .column-container {

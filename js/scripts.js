@@ -81,7 +81,6 @@ $(function () {
 			});
 
 			$card.mouseover(function(){
-				console.log('1');
 				checkList();
 			});
 
