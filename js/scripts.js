@@ -20,7 +20,7 @@ $(function () {
 			var $column = $('<div>').addClass('column');
 			var $columnTitle = $('<h2>').addClass('column-title').text(self.name);
 			var $columnCardList = $('<ul>').addClass('column-card-list');
-			var $columDelete = $('<button>').addClass('btn-delete').text('X');
+			var $columDelete = $('<button>').addClass('btn-delete').html('<span>x</span>');
 			var $columnAddCard = $('<button>').addClass('add-card').text('Add Card');
 			var $fakeCard = $('<li>').addClass('fake-placeholder');
 			self.listLength = $('li').length;
@@ -69,7 +69,7 @@ $(function () {
 		function createCard() {
 			var $card = $('<li>').addClass('card inProgress');
 			var $cardDescription = $('<p>').addClass('card-description').text(self.description);
-			var $cardDelete = $('<button>').addClass('btn-delete').text('X');
+			var $cardDelete = $('<button>').addClass('btn-delete').html('<span>x</span>');
 
 			$cardDelete.click(function () {
 				self.removeCard();
@@ -122,7 +122,7 @@ $(function () {
 			this.$element.append(column.$element);
 			initSortable();
 		},
-		$element: $('#board .column-container')
+		$element: $('.board .column-container')
 	};
 
 	function initSortable() {
