@@ -21,7 +21,6 @@ body {
 	width: 80%;
 	margin: 0 auto;
 	position: relative;
-	border: solid red;
 	margin-bottom: 10px;
 }
 
@@ -41,10 +40,14 @@ button {
 	cursor: pointer;
 }
 
-button.create-column {
+.create-column, .create-board {
 	margin: 15px;
 	font-size: 1.5rem;
-	background: #404873;
+	background-color: #404873;
+}
+
+.create-board {
+	background-color: #c0392b;
 }
 
 .btn-delete {
