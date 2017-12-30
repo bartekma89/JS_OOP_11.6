@@ -5,10 +5,6 @@ module.exports = function (grunt) {
 
 		//watch
 		watch: {
-			scss: {
-				files: ['style/scss/*.scss'],
-				tasks: ['sass']
-			},
 			cssmin: {
 				files: ['style/css/*.css'],
 				tasks: ['cssmin']
@@ -21,7 +17,6 @@ module.exports = function (grunt) {
 				files: ['js/*.js', '!js/min/*'],
 				tasks: ['jshint']
 			}
-
 		},
 
 		//sass
@@ -68,6 +63,6 @@ module.exports = function (grunt) {
 	});
 
 
-	grunt.registerTask('default', ['watch', 'sass', 'jshint']);
-	grunt.registerTask('compress', ['cssmin', 'uglify']);
+	grunt.registerTask('default', ['watch', 'jshint']);
+	grunt.registerTask('compress', ['saas', 'cssmin', 'uglify']);
 };
