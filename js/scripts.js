@@ -44,7 +44,6 @@ $(function () {
 
 			return $column;
 		}
-
 	}
 
 	Column.prototype = {
@@ -58,7 +57,6 @@ $(function () {
 		}
 	};
 
-	//card
 	function Card(description) {
 		var self = this;
 
@@ -173,11 +171,6 @@ $(function () {
 		}).disableSelection();
 	}
 
-	/*$('.create-column').click(function () {
-		var columnName = prompt('Enter a column name', 'Column name');
-		board.addColumn(new Column(columnName));
-	});*/
-
 	function checkList() {
 		$('.column-card-list').each(function () {
 			if ($(this).find('li').length > 1) {
@@ -187,6 +180,30 @@ $(function () {
 			}
 		});
 	}
+
+	function createBoard(name) {
+		var board = new Board(name);
+		$('.create-board').after(board.$element);
+
+		return board;
+	}
+
+	var board1 = createBoard('My Board');
+
+	var toDo = new Column('ToDo');
+	var doing = new Column('Doing');
+	var done = new Column('Done');
+
+	var card1 = new Card('New task');
+	var card2 = new Card('New Kanban Board');
+
+
+	board1.addColumn(toDo);
+	board1.addColumn(doing);
+	board1.addColumn(done);
+
+	toDo.addCard(card1);
+	done.addCard(card2);
 
 	checkList();
 });
